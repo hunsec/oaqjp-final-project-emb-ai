@@ -8,4 +8,16 @@ def emotion_detector(text_to_analyse):
         object_response = requests.post(url = URL, headers = HEADERS, json = INPUT_JSON)
         json_reponse = json.loads(object_response.text)
         readable_response = json_reponse['emotionPredictions'][0]['emotion']
+        readable_response['dominant_emotion'] = get_dominant_emotion(readable_response) 
+
         return readable_response
+
+def get_dominant_emotion(emotions):
+    dominant_emotion = ''
+    highest_emotion_score = 0
+    for emotion in emotions:
+        if emotions.get(emotion) > highest_emotion_score:
+            highest_emotion_score = emotions.get(emotion)
+            dominant_emotion = emotion
+
+    return dominant_emotion
